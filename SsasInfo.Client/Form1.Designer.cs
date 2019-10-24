@@ -28,7 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            Syncfusion.WinForms.DataGrid.GridCheckBoxColumn gridCheckBoxColumn1 = new Syncfusion.WinForms.DataGrid.GridCheckBoxColumn();
+            Syncfusion.WinForms.DataGrid.GridTextColumn gridTextColumn1 = new Syncfusion.WinForms.DataGrid.GridTextColumn();
+            Syncfusion.WinForms.DataGrid.GridTextColumn gridTextColumn2 = new Syncfusion.WinForms.DataGrid.GridTextColumn();
+            Syncfusion.WinForms.DataGrid.GridDateTimeColumn gridDateTimeColumn1 = new Syncfusion.WinForms.DataGrid.GridDateTimeColumn();
+            Syncfusion.WinForms.DataGrid.GridCheckBoxColumn gridCheckBoxColumn2 = new Syncfusion.WinForms.DataGrid.GridCheckBoxColumn();
+            Syncfusion.WinForms.DataGrid.GridTextColumn gridTextColumn3 = new Syncfusion.WinForms.DataGrid.GridTextColumn();
+            Syncfusion.WinForms.DataGrid.GridTextColumn gridTextColumn4 = new Syncfusion.WinForms.DataGrid.GridTextColumn();
+            Syncfusion.WinForms.DataGrid.GridDateTimeColumn gridDateTimeColumn2 = new Syncfusion.WinForms.DataGrid.GridDateTimeColumn();
+            Syncfusion.WinForms.DataGrid.GridTextColumn gridTextColumn5 = new Syncfusion.WinForms.DataGrid.GridTextColumn();
+            Syncfusion.WinForms.DataGrid.GridCheckBoxColumn gridCheckBoxColumn3 = new Syncfusion.WinForms.DataGrid.GridCheckBoxColumn();
             this.btnConnect = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -37,24 +46,33 @@
             this.cbDatabase = new System.Windows.Forms.ComboBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabDimensions = new System.Windows.Forms.TabPage();
+            this.button3 = new System.Windows.Forms.Button();
+            this.btnProcessDimensions = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.btnSelectAllPartition = new System.Windows.Forms.Button();
+            this.dgDimensions = new Syncfusion.WinForms.DataGrid.SfDataGrid();
             this.tabCubeTemplate = new System.Windows.Forms.TabPage();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
+            this.button6 = new System.Windows.Forms.Button();
+            this.button7 = new System.Windows.Forms.Button();
+            this.dgPartitions = new Syncfusion.WinForms.DataGrid.SfDataGrid();
+            this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
-            this.dataGridView2 = new System.Windows.Forms.DataGridView();
-            this.bsDimensionInfo = new System.Windows.Forms.BindingSource(this.components);
-            this.partitionInfoBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.selectedDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.displayDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.stateDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.lastProcessedDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.bgw = new System.ComponentModel.BackgroundWorker();
+            this.tabServer = new System.Windows.Forms.TabPage();
+            this.sfDataGrid1 = new Syncfusion.WinForms.DataGrid.SfDataGrid();
+            this.btnServerRefresh = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.tabControl1.SuspendLayout();
+            this.tabDimensions.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgDimensions)).BeginInit();
             this.tabCubeTemplate.SuspendLayout();
-            this.statusStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bsDimensionInfo)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.partitionInfoBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgPartitions)).BeginInit();
+            this.statusStrip.SuspendLayout();
+            this.tabServer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.sfDataGrid1)).BeginInit();
             this.SuspendLayout();
             // 
             // btnConnect
@@ -138,6 +156,7 @@
             this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControl1.Controls.Add(this.tabServer);
             this.tabControl1.Controls.Add(this.tabDimensions);
             this.tabControl1.Controls.Add(this.tabCubeTemplate);
             this.tabControl1.Location = new System.Drawing.Point(12, 45);
@@ -148,6 +167,11 @@
             // 
             // tabDimensions
             // 
+            this.tabDimensions.Controls.Add(this.button3);
+            this.tabDimensions.Controls.Add(this.btnProcessDimensions);
+            this.tabDimensions.Controls.Add(this.button1);
+            this.tabDimensions.Controls.Add(this.btnSelectAllPartition);
+            this.tabDimensions.Controls.Add(this.dgDimensions);
             this.tabDimensions.Location = new System.Drawing.Point(4, 22);
             this.tabDimensions.Name = "tabDimensions";
             this.tabDimensions.Padding = new System.Windows.Forms.Padding(3);
@@ -156,27 +180,184 @@
             this.tabDimensions.Text = "Dimensions";
             this.tabDimensions.UseVisualStyleBackColor = true;
             // 
+            // button3
+            // 
+            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button3.Location = new System.Drawing.Point(6, 330);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 5;
+            this.button3.Text = "Refresh";
+            this.button3.UseVisualStyleBackColor = true;
+            // 
+            // btnProcessDimensions
+            // 
+            this.btnProcessDimensions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnProcessDimensions.Location = new System.Drawing.Point(296, 330);
+            this.btnProcessDimensions.Name = "btnProcessDimensions";
+            this.btnProcessDimensions.Size = new System.Drawing.Size(119, 23);
+            this.btnProcessDimensions.TabIndex = 4;
+            this.btnProcessDimensions.Text = "Process Selected";
+            this.btnProcessDimensions.UseVisualStyleBackColor = true;
+            this.btnProcessDimensions.Click += new System.EventHandler(this.btnProcessDimensions_Click);
+            // 
+            // button1
+            // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button1.Location = new System.Drawing.Point(168, 330);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(122, 23);
+            this.button1.TabIndex = 3;
+            this.button1.Text = "Select Unprocessed";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // btnSelectAllPartition
+            // 
+            this.btnSelectAllPartition.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnSelectAllPartition.Location = new System.Drawing.Point(87, 330);
+            this.btnSelectAllPartition.Name = "btnSelectAllPartition";
+            this.btnSelectAllPartition.Size = new System.Drawing.Size(75, 23);
+            this.btnSelectAllPartition.TabIndex = 2;
+            this.btnSelectAllPartition.Text = "Select All";
+            this.btnSelectAllPartition.UseVisualStyleBackColor = true;
+            // 
+            // dgDimensions
+            // 
+            this.dgDimensions.AccessibleName = "Table";
+            this.dgDimensions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgDimensions.AutoGenerateColumns = false;
+            gridCheckBoxColumn1.HeaderText = "Selected";
+            gridCheckBoxColumn1.MappingName = "Selected";
+            gridCheckBoxColumn1.Width = 40D;
+            gridTextColumn1.AutoSizeColumnsMode = Syncfusion.WinForms.DataGrid.Enums.AutoSizeColumnsMode.Fill;
+            gridTextColumn1.HeaderText = "Partition Name (ID)";
+            gridTextColumn1.MappingName = "Display";
+            gridTextColumn2.HeaderText = "State";
+            gridTextColumn2.MappingName = "State";
+            gridDateTimeColumn1.HeaderText = "Last Processed";
+            gridDateTimeColumn1.MappingName = "LastProcessed";
+            gridDateTimeColumn1.MaxDateTime = new System.DateTime(9999, 12, 31, 23, 59, 59, 999);
+            this.dgDimensions.Columns.Add(gridCheckBoxColumn1);
+            this.dgDimensions.Columns.Add(gridTextColumn1);
+            this.dgDimensions.Columns.Add(gridTextColumn2);
+            this.dgDimensions.Columns.Add(gridDateTimeColumn1);
+            this.dgDimensions.Location = new System.Drawing.Point(6, 6);
+            this.dgDimensions.Name = "dgDimensions";
+            this.dgDimensions.SelectionMode = Syncfusion.WinForms.DataGrid.Enums.GridSelectionMode.Extended;
+            this.dgDimensions.ShowGroupDropArea = true;
+            this.dgDimensions.ShowRowHeader = true;
+            this.dgDimensions.Size = new System.Drawing.Size(919, 318);
+            this.dgDimensions.TabIndex = 1;
+            this.dgDimensions.Text = "sfDataGrid1";
+            // 
             // tabCubeTemplate
             // 
-            this.tabCubeTemplate.Controls.Add(this.dataGridView2);
+            this.tabCubeTemplate.Controls.Add(this.button4);
+            this.tabCubeTemplate.Controls.Add(this.button5);
+            this.tabCubeTemplate.Controls.Add(this.button6);
+            this.tabCubeTemplate.Controls.Add(this.button7);
+            this.tabCubeTemplate.Controls.Add(this.dgPartitions);
             this.tabCubeTemplate.Location = new System.Drawing.Point(4, 22);
             this.tabCubeTemplate.Name = "tabCubeTemplate";
             this.tabCubeTemplate.Padding = new System.Windows.Forms.Padding(3);
             this.tabCubeTemplate.Size = new System.Drawing.Size(931, 359);
             this.tabCubeTemplate.TabIndex = 1;
-            this.tabCubeTemplate.Text = "Cube Template";
+            this.tabCubeTemplate.Text = "Partitions";
             this.tabCubeTemplate.UseVisualStyleBackColor = true;
             // 
-            // statusStrip1
+            // button4
             // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button4.Location = new System.Drawing.Point(6, 330);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.TabIndex = 11;
+            this.button4.Text = "Refresh";
+            this.button4.UseVisualStyleBackColor = true;
+            // 
+            // button5
+            // 
+            this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button5.Location = new System.Drawing.Point(296, 330);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(119, 23);
+            this.button5.TabIndex = 10;
+            this.button5.Text = "Process Selected";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
+            // button6
+            // 
+            this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button6.Location = new System.Drawing.Point(168, 330);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(122, 23);
+            this.button6.TabIndex = 9;
+            this.button6.Text = "Select Unprocessed";
+            this.button6.UseVisualStyleBackColor = true;
+            // 
+            // button7
+            // 
+            this.button7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button7.Location = new System.Drawing.Point(87, 330);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(75, 23);
+            this.button7.TabIndex = 8;
+            this.button7.Text = "Select All";
+            this.button7.UseVisualStyleBackColor = true;
+            // 
+            // dgPartitions
+            // 
+            this.dgPartitions.AccessibleName = "Table";
+            this.dgPartitions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgPartitions.AutoGenerateColumns = false;
+            gridCheckBoxColumn2.HeaderText = "Selected";
+            gridCheckBoxColumn2.MappingName = "Selected";
+            gridCheckBoxColumn2.Width = 40D;
+            gridTextColumn3.AutoSizeColumnsMode = Syncfusion.WinForms.DataGrid.Enums.AutoSizeColumnsMode.Fill;
+            gridTextColumn3.HeaderText = "Partition Name (ID)";
+            gridTextColumn3.MappingName = "Display";
+            gridTextColumn4.HeaderText = "State";
+            gridTextColumn4.MappingName = "State";
+            gridDateTimeColumn2.Format = "d";
+            gridDateTimeColumn2.HeaderText = "Last Processed";
+            gridDateTimeColumn2.MappingName = "LastProcessed";
+            gridDateTimeColumn2.MaxDateTime = new System.DateTime(9999, 12, 31, 23, 59, 59, 999);
+            gridTextColumn5.AllowEditing = false;
+            gridTextColumn5.HeaderText = "Cube";
+            gridTextColumn5.MappingName = "CubeName";
+            gridCheckBoxColumn3.AllowEditing = false;
+            gridCheckBoxColumn3.HeaderText = "Processing";
+            gridCheckBoxColumn3.MappingName = "Processing";
+            this.dgPartitions.Columns.Add(gridCheckBoxColumn2);
+            this.dgPartitions.Columns.Add(gridTextColumn3);
+            this.dgPartitions.Columns.Add(gridTextColumn4);
+            this.dgPartitions.Columns.Add(gridDateTimeColumn2);
+            this.dgPartitions.Columns.Add(gridTextColumn5);
+            this.dgPartitions.Columns.Add(gridCheckBoxColumn3);
+            this.dgPartitions.Location = new System.Drawing.Point(6, 6);
+            this.dgPartitions.Name = "dgPartitions";
+            this.dgPartitions.SelectionMode = Syncfusion.WinForms.DataGrid.Enums.GridSelectionMode.Extended;
+            this.dgPartitions.ShowGroupDropArea = true;
+            this.dgPartitions.ShowRowHeader = true;
+            this.dgPartitions.Size = new System.Drawing.Size(919, 318);
+            this.dgPartitions.TabIndex = 7;
+            this.dgPartitions.Text = "sfDataGrid1";
+            // 
+            // statusStrip
+            // 
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblStatus,
             this.toolStripProgressBar});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 433);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(963, 22);
-            this.statusStrip1.TabIndex = 7;
-            this.statusStrip1.Text = "statusStrip1";
+            this.statusStrip.Location = new System.Drawing.Point(0, 433);
+            this.statusStrip.Name = "statusStrip";
+            this.statusStrip.Size = new System.Drawing.Size(963, 22);
+            this.statusStrip.TabIndex = 7;
+            this.statusStrip.Text = "statusStrip1";
             // 
             // lblStatus
             // 
@@ -189,68 +370,43 @@
             this.toolStripProgressBar.Name = "toolStripProgressBar";
             this.toolStripProgressBar.Size = new System.Drawing.Size(100, 16);
             // 
-            // dataGridView2
+            // tabServer
             // 
-            this.dataGridView2.AllowUserToAddRows = false;
-            this.dataGridView2.AllowUserToDeleteRows = false;
-            this.dataGridView2.AutoGenerateColumns = false;
-            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.selectedDataGridViewCheckBoxColumn,
-            this.displayDataGridViewTextBoxColumn,
-            this.stateDataGridViewTextBoxColumn1,
-            this.lastProcessedDataGridViewTextBoxColumn1});
-            this.dataGridView2.DataSource = this.partitionInfoBindingSource;
-            this.dataGridView2.Location = new System.Drawing.Point(6, 6);
-            this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.Size = new System.Drawing.Size(919, 347);
-            this.dataGridView2.TabIndex = 0;
+            this.tabServer.Controls.Add(this.btnServerRefresh);
+            this.tabServer.Controls.Add(this.sfDataGrid1);
+            this.tabServer.Location = new System.Drawing.Point(4, 22);
+            this.tabServer.Name = "tabServer";
+            this.tabServer.Padding = new System.Windows.Forms.Padding(3);
+            this.tabServer.Size = new System.Drawing.Size(931, 359);
+            this.tabServer.TabIndex = 2;
+            this.tabServer.Text = "Server";
+            this.tabServer.UseVisualStyleBackColor = true;
             // 
-            // bsDimensionInfo
+            // sfDataGrid1
             // 
-            this.bsDimensionInfo.DataSource = typeof(SsasInfo.Api.DimensionInfo);
+            this.sfDataGrid1.AccessibleName = "Table";
+            this.sfDataGrid1.Location = new System.Drawing.Point(6, 6);
+            this.sfDataGrid1.Name = "sfDataGrid1";
+            this.sfDataGrid1.Size = new System.Drawing.Size(919, 318);
+            this.sfDataGrid1.TabIndex = 0;
+            this.sfDataGrid1.Text = "sfDataGrid1";
             // 
-            // partitionInfoBindingSource
+            // btnServerRefresh
             // 
-            this.partitionInfoBindingSource.DataSource = typeof(SsasInfo.Api.PartitionInfo);
-            // 
-            // selectedDataGridViewCheckBoxColumn
-            // 
-            this.selectedDataGridViewCheckBoxColumn.DataPropertyName = "Selected";
-            this.selectedDataGridViewCheckBoxColumn.HeaderText = "";
-            this.selectedDataGridViewCheckBoxColumn.Name = "selectedDataGridViewCheckBoxColumn";
-            this.selectedDataGridViewCheckBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.selectedDataGridViewCheckBoxColumn.Width = 30;
-            // 
-            // displayDataGridViewTextBoxColumn
-            // 
-            this.displayDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.displayDataGridViewTextBoxColumn.DataPropertyName = "Display";
-            this.displayDataGridViewTextBoxColumn.HeaderText = "Display";
-            this.displayDataGridViewTextBoxColumn.Name = "displayDataGridViewTextBoxColumn";
-            this.displayDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // stateDataGridViewTextBoxColumn1
-            // 
-            this.stateDataGridViewTextBoxColumn1.DataPropertyName = "State";
-            this.stateDataGridViewTextBoxColumn1.HeaderText = "State";
-            this.stateDataGridViewTextBoxColumn1.Name = "stateDataGridViewTextBoxColumn1";
-            this.stateDataGridViewTextBoxColumn1.ReadOnly = true;
-            // 
-            // lastProcessedDataGridViewTextBoxColumn1
-            // 
-            this.lastProcessedDataGridViewTextBoxColumn1.DataPropertyName = "LastProcessed";
-            this.lastProcessedDataGridViewTextBoxColumn1.HeaderText = "LastProcessed";
-            this.lastProcessedDataGridViewTextBoxColumn1.Name = "lastProcessedDataGridViewTextBoxColumn1";
-            this.lastProcessedDataGridViewTextBoxColumn1.ReadOnly = true;
-            this.lastProcessedDataGridViewTextBoxColumn1.Width = 130;
+            this.btnServerRefresh.Location = new System.Drawing.Point(6, 330);
+            this.btnServerRefresh.Name = "btnServerRefresh";
+            this.btnServerRefresh.Size = new System.Drawing.Size(75, 23);
+            this.btnServerRefresh.TabIndex = 1;
+            this.btnServerRefresh.Text = "Refresh";
+            this.btnServerRefresh.UseVisualStyleBackColor = true;
+            this.btnServerRefresh.Click += new System.EventHandler(this.btnServerRefresh_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(963, 455);
-            this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "Form1";
@@ -258,12 +414,14 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
+            this.tabDimensions.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgDimensions)).EndInit();
             this.tabCubeTemplate.ResumeLayout(false);
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bsDimensionInfo)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.partitionInfoBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgPartitions)).EndInit();
+            this.statusStrip.ResumeLayout(false);
+            this.statusStrip.PerformLayout();
+            this.tabServer.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.sfDataGrid1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -277,19 +435,26 @@
         private System.Windows.Forms.TextBox txtDataSource;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripStatusLabel lblStatus;
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar;
         private System.Windows.Forms.ComboBox cbDatabase;
         private System.Windows.Forms.TabPage tabDimensions;
         private System.Windows.Forms.TabPage tabCubeTemplate;
-        private System.Windows.Forms.BindingSource bsDimensionInfo;
-        private System.Windows.Forms.DataGridView dataGridView2;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn selectedDataGridViewCheckBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn displayDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn stateDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn lastProcessedDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.BindingSource partitionInfoBindingSource;
+        private Syncfusion.WinForms.DataGrid.SfDataGrid dgDimensions;
+        private System.Windows.Forms.Button btnProcessDimensions;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnSelectAllPartition;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button button7;
+        private Syncfusion.WinForms.DataGrid.SfDataGrid dgPartitions;
+        private System.ComponentModel.BackgroundWorker bgw;
+        private System.Windows.Forms.TabPage tabServer;
+        private System.Windows.Forms.Button btnServerRefresh;
+        private Syncfusion.WinForms.DataGrid.SfDataGrid sfDataGrid1;
     }
 }
 

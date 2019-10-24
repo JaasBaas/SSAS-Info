@@ -56,8 +56,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DatabaseObjectType.cs" />
+    <Compile Include="DatabaseInfoBase.cs" />
+    <Compile Include="InstanceInfo.cs" />
     <Compile Include="PartitionInfo.cs" />
     <Compile Include="DimensionInfo.cs" />
+    <Compile Include="ProcessType.cs" />
     <Compile Include="SsasInfoUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -6,19 +6,18 @@ using System.Threading.Tasks;
 
 namespace SsasInfo.Api
 {
-    public class PartitionInfo
+    public class PartitionInfo:DatabaseInfo
     {
-        public string Name { get; set; }
-        public string Id { get; set; }
-        public string State { get; set; }
-        public DateTime LastProcessed { get; set; }
-        public bool Selected { get; set; } = false;
+        public PartitionInfo()
+        {
+            this.ObjectType = DatabaseObjectType.Partition;
+        }
 
-        public string Display { get
-            {
-                if (Id == Name)
-                    return Name;
-                else return $"{Name} ({Id})";
-            } }
+        public string MeasureGroupId { get; set; }
+        public string MeasureGroupName { get; set; }
+
+        public string CubeId { get; set; }
+        public string CubeName { get; set; }
+
     }
 }

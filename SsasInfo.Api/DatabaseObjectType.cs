@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace SsasInfo.Api
 {
-    public class DimensionInfo:DatabaseInfo
+    public enum DatabaseObjectType
     {
-        public DimensionInfo()
-        {
-            this.ObjectType = DatabaseObjectType.Dimension;
-        }
+        Partition = 1,
+        Dimension = 2
     }
 }

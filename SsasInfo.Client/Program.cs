@@ -14,6 +14,8 @@ namespace SsasInfo.Client
         [STAThread]
         static void Main()
         {
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("@31362e332e30Z5TFjKt1yuYbnsWtqM843MeHD5DgyT26PrcA3+bLbCg=");
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
