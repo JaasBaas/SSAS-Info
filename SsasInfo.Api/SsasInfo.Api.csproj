@@ -56,9 +56,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DatabaseInfo.cs" />
     <Compile Include="DatabaseObjectType.cs" />
     <Compile Include="DatabaseInfoBase.cs" />
-    <Compile Include="InstanceInfo.cs" />
+    <Compile Include="ServerInfo.cs" />
     <Compile Include="PartitionInfo.cs" />
     <Compile Include="DimensionInfo.cs" />
     <Compile Include="ProcessType.cs" />

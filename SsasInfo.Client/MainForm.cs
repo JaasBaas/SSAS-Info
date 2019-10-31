@@ -1,4 +1,5 @@
 ﻿using SsasInfo.Api;
+using Syncfusion.Windows.Forms.Tools;
 using Syncfusion.WinForms.DataGrid;
 using System;
 using System.Collections.Generic;
@@ -16,89 +17,65 @@ using System.Windows.Forms;
 
 namespace SsasInfo.Client
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         #region Constructor
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
         }
         #endregion
 
         #region Utility
-        SsasInfo.Api.SsasInfoUtility _utility;
+        SsasInfo.Api.SsasInfoUtility _utility = new SsasInfoUtility();
+        #endregion
+
+        #region Server
+        /// <summary>
+        /// Server for which details is currently displayed
+        /// </summary>
+        private ServerInfo _currentServer;
+
+        /// <summary>
+        /// Get the currencly selected server in the server/database tree view control
+        /// </summary>
+        private ServerInfo _selectedServer
+        {
+            get
+            {
+                if (tvServer.SelectedNode.Tag is ServerInfo)
+                    return tvServer.SelectedNode.Tag as ServerInfo;
+                else if (tvServer.SelectedNode.Tag is DatabaseInfoNew)
+                    return tvServer.SelectedNode.Parent.Tag as ServerInfo;
+                else return null;
+            }
+        }
         #endregion
 
         #region Database
-        private string _selectedDatabaseName;
+        /// <summary>
+        /// Database for which details is currently displayed
+        /// </summary>
+        private DatabaseInfoNew _currentDatabase;
+
+        /// <summary>
+        /// Get the currencly selected database in the server/database tree view control
+        /// </summary>
+        private DatabaseInfoNew _selectedDatabase
+        {
+            get
+            {
+                if (tvServer.SelectedNode.Tag is DatabaseInfoNew)
+                    return tvServer.SelectedNode.Tag as DatabaseInfoNew;
+                else return null;
+            }
+        }
         #endregion
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                lblStatus.Text = "Connecting to server...";
-
-                _utility = new SsasInfo.Api.SsasInfoUtility();
-                _utility.DataSource = txtDataSource.Text;
-                _utility.OnPartitionProcessUpdate += _utility_OnPartitionProcessUpdate;
-
-                var connected = _utility.TestConnectivity();
-
-                if (connected)
-                {
-                    lblStatus.Text = "Extracting database names";
-                    LoadDatabaseComboBox();
-                    lblStatus.Text = "Ready";
-                }
-                else
-                {
-                    lblStatus.Text = "Error connective to server";
-                }
-            }
-            finally
-            {
-
-            }
-
-
-        }
-
-
-        private void LoadDatabaseComboBox()
-        {
-            cbDatabase.Items.Clear();
-            cbDatabase.Items.AddRange(_utility.GetDatabases());
-        }
-
-        private void cbDatabase_SelectedValueChanged(object sender, EventArgs e)
-        {
-            _selectedDatabaseName = cbDatabase.SelectedItem.ToString();
-            RefreshDatabase();
-            RefreshDimensionInfo();
-            LoadPartitionsNewThread();
-        }
-
-        private void RefreshDatabase()
-        {
-            //RefreshCubeTabs();
-        }
-
-        private void RefreshCubeTabs()
-        {
-            while (tabControl1.TabPages.Count > 1)
-                tabControl1.TabPages.RemoveAt(1);
-
-            foreach (var s in _utility.GetCubeNames(_selectedDatabaseName))
-            {
-                //var page = new TabPage();
-                //page.Text = s;
-                tabControl1.TabPages.Add(s);
-            }
-        }
         private void RefreshDimensionInfo()
         {
-            _dimensions = _utility.GetDimensionInfo(_selectedDatabaseName);
+            if (_selectedDatabase != null)
+                _dimensions = _utility.GetDimensionInfo(_selectedDatabase);
             dgDimensions.DataSource = _dimensions;
         }
 
@@ -140,6 +117,12 @@ namespace SsasInfo.Client
         #region Dimensions
         private List<DimensionInfo> _dimensions;
 
+        private void RefreshDimensionTab()
+        {
+            RefreshDimensionInfo();
+
+        }
+
         #region Dimension Processing
         private Thread _dimThread = null;
         private void ProcessSelectedDimensions()
@@ -169,12 +152,20 @@ namespace SsasInfo.Client
 
         #region Partitions
         private List<PartitionInfo> _partitions;
-
+        private List<PartitionInfo> _partitionsFiltered { get
+            {
+                return _partitions.Where(
+                    v => v.PartitionName.ToUpper().Contains(txtPartitionFilter.Text.ToUpper())
+                    || v.MeasureGroupLong.ToUpper().Contains(txtPartitionFilter.Text.ToUpper())
+                    ).ToList();
+            } }
+  
         /// <summary>
         /// Load partitions on a new thread
         /// </summary>
         private void LoadPartitionsNewThread()
         {
+            txtPartitionFilter.Text = "";
             var t = new Thread(new ThreadStart(LoadPartitions));
             t.Start();
         }
@@ -184,20 +175,20 @@ namespace SsasInfo.Client
         /// </summary>
         private void LoadPartitions()
         {
-            _partitions = _utility.GetPartitionInfo(_selectedDatabaseName);
+            _partitions = _utility.GetPartitionInfo(_selectedDatabase);
 
-            PartitionGridDataSource(_partitions);
+            SetPartitionGridDataSource(_partitions);
         }
         #endregion
 
         #region Partition Grid Data Source
         private delegate void PartitionGridDataSourceSafeCallDelegate(object dataSource);
 
-        private void PartitionGridDataSource(object dataSource)
+        private void SetPartitionGridDataSource(object dataSource)
         {
             if (this.InvokeRequired)
             {
-                var d = new PartitionGridDataSourceSafeCallDelegate(PartitionGridDataSource);
+                var d = new PartitionGridDataSourceSafeCallDelegate(SetPartitionGridDataSource);
                 this.Invoke(d, new object[] { dataSource });
             }
             else
@@ -275,5 +266,110 @@ namespace SsasInfo.Client
         }
         #endregion
 
+        private void btnServerAdd_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var server = _utility.AddServer(txtDataSource.Text);
+
+                if (server != null)
+                {
+                    server.ReloadDatabases();
+                    AddServerNode(server, true);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        #region Server Tree View
+        private void AddServerNode(ServerInfo server, bool expanded)
+        {
+            var serverNode = new TreeNodeAdv
+            {
+                Text = server.DisplayText,
+                Tag = server,
+                Expanded = expanded
+            };
+
+            tvServer.Nodes.Add(serverNode);
+
+            foreach (var db in server.Databases)
+            {
+                var dbNode = new TreeNodeAdv
+                {
+                    Tag = db,
+                    Text = db.Display
+                };
+                serverNode.Nodes.Add(dbNode);
+            }
+        }
+        #endregion
+
+        private void tvServer_AfterSelect(object sender, EventArgs e)
+        {
+            try
+            {
+                if (_selectedServer != _currentServer)
+                    SelectedServerChanged();
+
+                if (_selectedDatabase != _currentDatabase)
+                    SelectedDatabaseChanged();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void SelectedDatabaseChanged()
+        {
+            _currentDatabase = _selectedDatabase;
+
+            if (_currentDatabase != null)
+            {
+                RefreshDimensionInfo();
+                LoadPartitionsNewThread();
+            }
+
+        }
+
+        private void SelectedServerChanged()
+        {
+            _currentServer = _selectedServer;
+        }
+
+        private void btnEnableSelectedPartitions_Click(object sender, EventArgs e)
+        {
+            var selected = _partitions.Where(v => v.Selected == true).ToList();
+            _utility.EnablePartitions(selected);
+        }
+
+        private void txtPartitionFilter_TextChanged(object sender, EventArgs e)
+        {
+            SetPartitionGridDataSource(_partitionsFiltered);
+        }
+
+        private void dgPartitions_CellButtonClick(object sender, Syncfusion.WinForms.DataGrid.Events.CellButtonClickEventArgs e)
+        {
+            if (dgPartitions.SelectedItem is PartitionInfo p)
+            {
+                var frm = new SqlEditForm(p);
+                frm.ShowDialog();
+            }
+        }
+
+        private void dgPartitions_QueryRowStyle(object sender, Syncfusion.WinForms.DataGrid.Events.QueryRowStyleEventArgs e)
+        {
+            if (e.RowData is PartitionInfo p)
+            {
+                if (p.State != "Processed" || p.Disabled)
+                    e.Style.BackColor = Color.FromArgb(255, 192, 192);
+                else if (p.State == "Processed")
+                    e.Style.BackColor = Color.FromArgb(192, 255, 192);
+            }
+        }
     }
 }

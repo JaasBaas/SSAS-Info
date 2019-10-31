@@ -9,51 +9,51 @@ namespace SsasInfo.Api
 {
     public class SsasInfoUtility
     {
-        public string DataSource { get; set; }
-        public string Catalog { get; set; }
-
-        private Server _server;
-
-
-        public bool TestConnectivity()
+        #region Server
+        public ServerInfo AddServer(string serverId)
         {
             try
             {
-                var str = $"Provider=MSOLAP;Data Source={DataSource}";
+                var server = new ServerInfo();
+                server.DataSourceId = serverId;
+                server.Connect();
 
-                _server = new Server();
-                _server.Connect(str);
-                return true;
+                if (server.Connected)
+                {
+                    return server;
+                }
+
+                return null;
             }
             catch (Exception)
             {
-                return false;
+                throw;
             }
         }
+        #endregion
 
-        public string[] GetDatabases()
+        #region Database
+        public List<DatabaseInfoNew> GetDatabases(ServerInfo server)
         {
-            return (from Database e in _server.Databases
-                    select e.Name).ToArray();
+            return (from Database e in server.Databases
+                    select new DatabaseInfoNew(server, e)).ToList();
         }
+        #endregion
 
-        public string[] GetCubeNames(string database)
+        #region Cube
+
+        #endregion
+
+        #region Dimensions
+        public List<DimensionInfo> GetDimensionInfo(DatabaseInfoNew database)
         {
-            return (from Cube e in _server.Databases[database].Cubes
-                    orderby e.Name
-                    select e.Name
-                    ).ToArray();
-        }
-
-
-        public List<DimensionInfo> GetDimensionInfo(string database)
-        {
-            var db = _server.Databases[database];
+            var db = database.Database;
 
             return (from Dimension d in db.Dimensions
                     orderby d.Name
                     select new DimensionInfo()
                     {
+                        DimensionInternal = d,
                         DatabaseId = db.ID,
                         DatabaseName = db.Name,
                         Id = d.ID,
@@ -62,31 +62,7 @@ namespace SsasInfo.Api
                         LastProcessed = d.LastProcessed
                     }).ToList();
         }
-        public List<PartitionInfo> GetPartitionInfo(string database)
-        {
 
-            _server.Refresh(true);
-
-            var db = _server.Databases[database];
-            
-            return (from Cube c in db.Cubes
-                    from MeasureGroup mg in c.MeasureGroups
-                    from Partition p in mg.Partitions
-                    orderby c.Name, mg.Name, p.Name
-                    select new PartitionInfo()
-                    {
-                        DatabaseId = db.ID,
-                        DatabaseName = db.Name,
-                        CubeId = c.ID,
-                        CubeName = c.Name,
-                        Id = p.ID,
-                        Name = mg.Name,
-                        State = p.State.ToString(),
-                        LastProcessed = p.LastProcessed,
-                        MeasureGroupName = mg.Name,
-                        MeasureGroupId = mg.ID
-                    }).ToList();
-        }
 
         public void ProcessDimensions(List<DimensionInfo> dimensions, ProcessType processType)
         {
@@ -95,10 +71,46 @@ namespace SsasInfo.Api
                 var ptid = (int)processType;
                 var mspt = (Microsoft.AnalysisServices.ProcessType)ptid;
                 d.ProcessStart = DateTime.Now;
-                _server.Databases[d.DatabaseId].Dimensions[d.Id].Process(mspt);
+                d.DimensionInternal.Process(mspt);
                 d.ProcessEnd = DateTime.Now;
             }
         }
+        #endregion
+
+        #region Partitions
+        /// <summary>
+        /// Refresh the partitions for a specific database
+        /// </summary>
+        public List<PartitionInfo> GetPartitionInfo(DatabaseInfoNew database)
+        {
+            database.Database.Refresh(true);
+
+            return (from Cube c in database.Database.Cubes
+                    from MeasureGroup mg in c.MeasureGroups
+                    from Partition p in mg.Partitions
+                    orderby c.Name, mg.Name, p.Name
+                    select new PartitionInfo()
+                    {
+                        DatabaseInternal = database,
+                        PartitionInternal = p
+                    }).ToList();
+        }
+
+        public void EnablePartitions(List<PartitionInfo> partitions)
+        {
+            foreach (var p in partitions)
+            {
+                if (p.QueryDefinition.ToUpper().Contains("AND 1 = 0"))
+                {
+                    p.QueryDefinition = p.QueryDefinition.ToUpper().Replace("AND 1 = 0", "");
+                    p.PartitionInternal.Process(Microsoft.AnalysisServices.ProcessType.ProcessClear);
+                    p.NotifyProcessPropertiesChanged();
+                }
+            }
+        }
+        #endregion
+
+
 
         #region Partition Processing
         #region Partition Process Event Handling
@@ -114,38 +126,42 @@ namespace SsasInfo.Api
         {
             foreach (var d in partitions.Where(d => d.Selected == true))
             {
-                ProcessPartition(d, processType);
+                //ProcessPartition(d, processType);
+                d.Process(processType);
             }
         }
 
-        public void ProcessPartition(PartitionInfo partition, ProcessType processType)
-        {
-            try
-            {
-                var ptid = (int)processType;
-                var mspt = (Microsoft.AnalysisServices.ProcessType)ptid;
+        //public void ProcessPartition(PartitionInfo partition, ProcessType processType)
+        //{
+        //    try
+        //    {
+        //        var ptid = (int)processType;
+        //        var mspt = (Microsoft.AnalysisServices.ProcessType)ptid;
 
-                partition.Processing = true;
-                partition.ProcessStart = DateTime.Now;
-                _server.Databases[partition.DatabaseId].Cubes[partition.CubeId].MeasureGroups[partition.MeasureGroupId].Partitions[partition.Id].Process(mspt);
-                partition.ProcessEnd = DateTime.Now;
-                partition.Processing = false;
-                partition.ProcessSuccessfull = true;
+        //        partition.Processing = true;
+        //        partition.ProcessStart = DateTime.Now;
+        //        partition.PartitionInternal.Process(mspt);
+        //        partition.ProcessEnd = DateTime.Now;
+        //        partition.Processing = false;
+        //        partition.ProcessSuccessfull = true;
 
-                partition.Selected = false;
+        //        partition.Selected = false;
 
-                NotifyPartitionProcessUpdate(partition);
-            }
-            catch (Exception ex)
-            {
-                partition.ProcessEnd = DateTime.Now;
-                partition.Processing = false;
-                partition.ProcessSuccessfull = false;
-                partition.ProcessError = ex.ToString();
+        //        partition.PartitionInternal.Refresh();
+        //        partition.NotifyProcessPropertiesChanged();
 
-                NotifyPartitionProcessUpdate(partition);
-            }
-        }
+        //        NotifyPartitionProcessUpdate(partition);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        partition.ProcessEnd = DateTime.Now;
+        //        partition.Processing = false;
+        //        partition.ProcessSuccessfull = false;
+        //        partition.ProcessError = ex.ToString();
+
+        //        NotifyPartitionProcessUpdate(partition);
+        //    }
+        //}
         #endregion
     }
 }

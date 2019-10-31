@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AnalysisServices;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,5 +13,7 @@ namespace SsasInfo.Api
         {
             this.ObjectType = DatabaseObjectType.Dimension;
         }
+
+        internal Dimension DimensionInternal { get; set; }
     }
 }
