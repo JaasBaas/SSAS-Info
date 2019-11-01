@@ -152,21 +152,31 @@ namespace SsasInfo.Client
 
         #region Partitions
         private List<PartitionInfo> _partitions;
-        private List<PartitionInfo> _partitionsFiltered { get
+        private List<PartitionInfo> _partitionsFiltered
+        {
+            get
             {
                 return _partitions.Where(
                     v => v.PartitionName.ToUpper().Contains(txtPartitionFilter.Text.ToUpper())
                     || v.MeasureGroupLong.ToUpper().Contains(txtPartitionFilter.Text.ToUpper())
                     ).ToList();
-            } }
-  
+            }
+        }
+
         /// <summary>
         /// Load partitions on a new thread
         /// </summary>
         private void LoadPartitionsNewThread()
         {
-            txtPartitionFilter.Text = "";
-            var t = new Thread(new ThreadStart(LoadPartitions));
+            SetStatusLabel("Refreshing partitions...");
+
+            var starter = new ThreadStart(LoadPartitions);
+            starter += () =>
+            {
+                SetStatusLabelReady();
+            };
+
+            var t = new Thread(starter) { IsBackground = true };
             t.Start();
         }
 
@@ -178,6 +188,13 @@ namespace SsasInfo.Client
             _partitions = _utility.GetPartitionInfo(_selectedDatabase);
 
             SetPartitionGridDataSource(_partitions);
+        }
+
+        private void RefreshPartitions()
+        {
+            SetPartitionGridDataSource(null);
+            txtPartitionFilter.Text = "";
+            LoadPartitionsNewThread();
         }
         #endregion
 
@@ -207,7 +224,14 @@ namespace SsasInfo.Client
         /// </summary>
         private void ProcessSelectedPartitionsNewThread()
         {
-            _parThread = new Thread(new ThreadStart(ProcessSelectedPartitions));
+            var starter = new ThreadStart(ProcessSelectedPartitions);
+            //starter += () =>
+            //{
+            //    SetStatusLabelReady();
+            //    SetCursorSafe(Cursors.Default);
+            //};
+
+            _parThread = new Thread(starter);
             _parThread.Start();
         }
 
@@ -221,7 +245,7 @@ namespace SsasInfo.Client
                 SetCursorSafe(Cursors.WaitCursor);
                 SetStatusLabel("Processing partitions...");
 
-                _utility.ProcessSelectedPartitions(_partitions, ProcessType.ProcessDefault);
+                _utility.ProcessSelectedPartitions(_partitions, _selectedPartitionProcessType);
             }
             finally
             {
@@ -369,6 +393,48 @@ namespace SsasInfo.Client
                     e.Style.BackColor = Color.FromArgb(255, 192, 192);
                 else if (p.State == "Processed")
                     e.Style.BackColor = Color.FromArgb(192, 255, 192);
+            }
+        }
+
+        private void btnPartitionRefresh_Click(object sender, EventArgs e)
+        {
+            RefreshPartitions();
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            LoadProcessTypeComboBoxes();
+        }
+
+        private List<KeyValuePair<int, string>> _processTypes = new List<KeyValuePair<int, string>>
+        {
+            new KeyValuePair<int, string>(0, "Process Full"),
+            new KeyValuePair<int, string>(1, "Process Add"),
+            new KeyValuePair<int, string>(2, "Process Update"),
+            new KeyValuePair<int, string>(3, "Process Index"),
+            new KeyValuePair<int, string>(4, "Process Data"),
+            new KeyValuePair<int, string>(5, "Process Default"),
+            new KeyValuePair<int, string>(6, "Process Clear"),
+            new KeyValuePair<int, string>(7, "Process Structure")
+        };
+
+        private void LoadProcessTypeComboBoxes()
+        {
+            cbPartitionProcessType.DataSource = _processTypes;
+            cbPartitionProcessType.ValueMember = "Key";
+            cbPartitionProcessType.DisplayMember = "Value";
+            cbPartitionProcessType.SelectedIndex = 0;
+        }
+
+        private ProcessType _selectedPartitionProcessType
+        {
+            get
+            {
+                if (cbPartitionProcessType.SelectedItem is KeyValuePair<int, string> i)
+                {
+                    return (ProcessType)i.Key;
+                }
+                return ProcessType.ProcessDefault;
             }
         }
     }

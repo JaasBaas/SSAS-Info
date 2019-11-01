@@ -28,17 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
+            Syncfusion.WinForms.DataGrid.GridCheckBoxColumn gridCheckBoxColumn1 = new Syncfusion.WinForms.DataGrid.GridCheckBoxColumn();
+            Syncfusion.WinForms.DataGrid.GridTextColumn gridTextColumn1 = new Syncfusion.WinForms.DataGrid.GridTextColumn();
+            Syncfusion.WinForms.DataGrid.GridTextColumn gridTextColumn2 = new Syncfusion.WinForms.DataGrid.GridTextColumn();
+            Syncfusion.WinForms.DataGrid.GridDateTimeColumn gridDateTimeColumn1 = new Syncfusion.WinForms.DataGrid.GridDateTimeColumn();
             Syncfusion.WinForms.DataGrid.GridCheckBoxColumn gridCheckBoxColumn2 = new Syncfusion.WinForms.DataGrid.GridCheckBoxColumn();
+            Syncfusion.WinForms.DataGrid.GridCheckBoxColumn gridCheckBoxColumn6 = new Syncfusion.WinForms.DataGrid.GridCheckBoxColumn();
             Syncfusion.WinForms.DataGrid.GridTextColumn gridTextColumn3 = new Syncfusion.WinForms.DataGrid.GridTextColumn();
             Syncfusion.WinForms.DataGrid.GridTextColumn gridTextColumn4 = new Syncfusion.WinForms.DataGrid.GridTextColumn();
-            Syncfusion.WinForms.DataGrid.GridDateTimeColumn gridDateTimeColumn2 = new Syncfusion.WinForms.DataGrid.GridDateTimeColumn();
-            Syncfusion.WinForms.DataGrid.GridCheckBoxColumn gridCheckBoxColumn5 = new Syncfusion.WinForms.DataGrid.GridCheckBoxColumn();
-            Syncfusion.WinForms.DataGrid.GridCheckBoxColumn gridCheckBoxColumn6 = new Syncfusion.WinForms.DataGrid.GridCheckBoxColumn();
-            Syncfusion.WinForms.DataGrid.GridTextColumn gridTextColumn7 = new Syncfusion.WinForms.DataGrid.GridTextColumn();
-            Syncfusion.WinForms.DataGrid.GridTextColumn gridTextColumn8 = new Syncfusion.WinForms.DataGrid.GridTextColumn();
             Syncfusion.WinForms.DataGrid.GridTextColumn gridTextColumn9 = new Syncfusion.WinForms.DataGrid.GridTextColumn();
             Syncfusion.WinForms.DataGrid.GridTextColumn gridTextColumn10 = new Syncfusion.WinForms.DataGrid.GridTextColumn();
-            Syncfusion.WinForms.DataGrid.GridDateTimeColumn gridDateTimeColumn3 = new Syncfusion.WinForms.DataGrid.GridDateTimeColumn();
+            Syncfusion.WinForms.DataGrid.GridDateTimeColumn gridDateTimeColumn2 = new Syncfusion.WinForms.DataGrid.GridDateTimeColumn();
             Syncfusion.WinForms.DataGrid.GridCheckBoxColumn gridCheckBoxColumn7 = new Syncfusion.WinForms.DataGrid.GridCheckBoxColumn();
             Syncfusion.WinForms.DataGrid.GridButtonColumn gridButtonColumn2 = new Syncfusion.WinForms.DataGrid.GridButtonColumn();
             Syncfusion.Windows.Forms.Tools.TreeNodeAdvStyleInfo treeNodeAdvStyleInfo2 = new Syncfusion.Windows.Forms.Tools.TreeNodeAdvStyleInfo();
@@ -57,7 +57,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.txtPartitionFilter = new System.Windows.Forms.TextBox();
             this.btnEnableSelectedPartitions = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
+            this.btnPartitionRefresh = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
@@ -68,7 +68,7 @@
             this.bgw = new System.ComponentModel.BackgroundWorker();
             this.tvServer = new Syncfusion.Windows.Forms.Tools.TreeViewAdv();
             this.btnServerAdd = new System.Windows.Forms.Button();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.cbPartitionProcessType = new Syncfusion.WinForms.ListView.SfComboBox();
             this.tabControl1.SuspendLayout();
             this.tabServer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sfDataGrid1)).BeginInit();
@@ -78,6 +78,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgPartitions)).BeginInit();
             this.statusStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tvServer)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cbPartitionProcessType)).BeginInit();
             this.SuspendLayout();
             // 
             // txtDataSource
@@ -100,7 +101,7 @@
             this.tabControl1.Location = new System.Drawing.Point(285, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(832, 419);
+            this.tabControl1.Size = new System.Drawing.Size(847, 419);
             this.tabControl1.TabIndex = 6;
             // 
             // tabServer
@@ -110,7 +111,7 @@
             this.tabServer.Location = new System.Drawing.Point(4, 22);
             this.tabServer.Name = "tabServer";
             this.tabServer.Padding = new System.Windows.Forms.Padding(3);
-            this.tabServer.Size = new System.Drawing.Size(658, 392);
+            this.tabServer.Size = new System.Drawing.Size(824, 393);
             this.tabServer.TabIndex = 2;
             this.tabServer.Text = "Server";
             this.tabServer.UseVisualStyleBackColor = true;
@@ -144,7 +145,7 @@
             this.tabDimensions.Location = new System.Drawing.Point(4, 22);
             this.tabDimensions.Name = "tabDimensions";
             this.tabDimensions.Padding = new System.Windows.Forms.Padding(3);
-            this.tabDimensions.Size = new System.Drawing.Size(658, 392);
+            this.tabDimensions.Size = new System.Drawing.Size(706, 393);
             this.tabDimensions.TabIndex = 0;
             this.tabDimensions.Text = "Dimensions";
             this.tabDimensions.UseVisualStyleBackColor = true;
@@ -197,37 +198,37 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgDimensions.AutoGenerateColumns = false;
-            gridCheckBoxColumn2.HeaderText = "Selected";
-            gridCheckBoxColumn2.MappingName = "Selected";
-            gridCheckBoxColumn2.Width = 40D;
-            gridTextColumn3.AutoSizeColumnsMode = Syncfusion.WinForms.DataGrid.Enums.AutoSizeColumnsMode.Fill;
-            gridTextColumn3.HeaderText = "Partition Name (ID)";
-            gridTextColumn3.MappingName = "Display";
-            gridTextColumn4.HeaderText = "State";
-            gridTextColumn4.MappingName = "State";
-            gridDateTimeColumn2.HeaderText = "Last Processed";
-            gridDateTimeColumn2.MappingName = "LastProcessed";
-            gridDateTimeColumn2.MaxDateTime = new System.DateTime(9999, 12, 31, 23, 59, 59, 999);
-            this.dgDimensions.Columns.Add(gridCheckBoxColumn2);
-            this.dgDimensions.Columns.Add(gridTextColumn3);
-            this.dgDimensions.Columns.Add(gridTextColumn4);
-            this.dgDimensions.Columns.Add(gridDateTimeColumn2);
+            gridCheckBoxColumn1.HeaderText = "Selected";
+            gridCheckBoxColumn1.MappingName = "Selected";
+            gridCheckBoxColumn1.Width = 40D;
+            gridTextColumn1.AutoSizeColumnsMode = Syncfusion.WinForms.DataGrid.Enums.AutoSizeColumnsMode.Fill;
+            gridTextColumn1.HeaderText = "Partition Name (ID)";
+            gridTextColumn1.MappingName = "Display";
+            gridTextColumn2.HeaderText = "State";
+            gridTextColumn2.MappingName = "State";
+            gridDateTimeColumn1.HeaderText = "Last Processed";
+            gridDateTimeColumn1.MappingName = "LastProcessed";
+            gridDateTimeColumn1.MaxDateTime = new System.DateTime(9999, 12, 31, 23, 59, 59, 999);
+            this.dgDimensions.Columns.Add(gridCheckBoxColumn1);
+            this.dgDimensions.Columns.Add(gridTextColumn1);
+            this.dgDimensions.Columns.Add(gridTextColumn2);
+            this.dgDimensions.Columns.Add(gridDateTimeColumn1);
             this.dgDimensions.Location = new System.Drawing.Point(6, 6);
             this.dgDimensions.Name = "dgDimensions";
             this.dgDimensions.SelectionMode = Syncfusion.WinForms.DataGrid.Enums.GridSelectionMode.Extended;
             this.dgDimensions.ShowGroupDropArea = true;
             this.dgDimensions.ShowRowHeader = true;
-            this.dgDimensions.Size = new System.Drawing.Size(646, 351);
+            this.dgDimensions.Size = new System.Drawing.Size(694, 351);
             this.dgDimensions.TabIndex = 1;
             this.dgDimensions.Text = "sfDataGrid1";
             // 
             // tabPartitions
             // 
-            this.tabPartitions.Controls.Add(this.comboBox1);
+            this.tabPartitions.Controls.Add(this.cbPartitionProcessType);
             this.tabPartitions.Controls.Add(this.label1);
             this.tabPartitions.Controls.Add(this.txtPartitionFilter);
             this.tabPartitions.Controls.Add(this.btnEnableSelectedPartitions);
-            this.tabPartitions.Controls.Add(this.button4);
+            this.tabPartitions.Controls.Add(this.btnPartitionRefresh);
             this.tabPartitions.Controls.Add(this.button5);
             this.tabPartitions.Controls.Add(this.button6);
             this.tabPartitions.Controls.Add(this.button7);
@@ -235,7 +236,7 @@
             this.tabPartitions.Location = new System.Drawing.Point(4, 22);
             this.tabPartitions.Name = "tabPartitions";
             this.tabPartitions.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPartitions.Size = new System.Drawing.Size(824, 393);
+            this.tabPartitions.Size = new System.Drawing.Size(839, 393);
             this.tabPartitions.TabIndex = 1;
             this.tabPartitions.Text = "Partitions";
             this.tabPartitions.UseVisualStyleBackColor = true;
@@ -255,7 +256,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtPartitionFilter.Location = new System.Drawing.Point(41, 6);
             this.txtPartitionFilter.Name = "txtPartitionFilter";
-            this.txtPartitionFilter.Size = new System.Drawing.Size(777, 20);
+            this.txtPartitionFilter.Size = new System.Drawing.Size(792, 20);
             this.txtPartitionFilter.TabIndex = 13;
             this.txtPartitionFilter.TextChanged += new System.EventHandler(this.txtPartitionFilter_TextChanged);
             // 
@@ -270,15 +271,16 @@
             this.btnEnableSelectedPartitions.UseVisualStyleBackColor = true;
             this.btnEnableSelectedPartitions.Click += new System.EventHandler(this.btnEnableSelectedPartitions_Click);
             // 
-            // button4
+            // btnPartitionRefresh
             // 
-            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button4.Location = new System.Drawing.Point(6, 364);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
-            this.button4.TabIndex = 11;
-            this.button4.Text = "Refresh";
-            this.button4.UseVisualStyleBackColor = true;
+            this.btnPartitionRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnPartitionRefresh.Location = new System.Drawing.Point(6, 364);
+            this.btnPartitionRefresh.Name = "btnPartitionRefresh";
+            this.btnPartitionRefresh.Size = new System.Drawing.Size(75, 23);
+            this.btnPartitionRefresh.TabIndex = 11;
+            this.btnPartitionRefresh.Text = "Refresh";
+            this.btnPartitionRefresh.UseVisualStyleBackColor = true;
+            this.btnPartitionRefresh.Click += new System.EventHandler(this.btnPartitionRefresh_Click);
             // 
             // button5
             // 
@@ -321,27 +323,27 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgPartitions.AutoGenerateColumns = false;
             this.dgPartitions.AutoSizeColumnsMode = Syncfusion.WinForms.DataGrid.Enums.AutoSizeColumnsMode.AllCells;
-            gridCheckBoxColumn5.AllowDragging = true;
-            gridCheckBoxColumn5.AllowEditing = false;
-            gridCheckBoxColumn5.AllowResizing = true;
-            gridCheckBoxColumn5.HeaderText = "Disabled";
-            gridCheckBoxColumn5.MappingName = "Disabled";
-            gridCheckBoxColumn5.Width = 40D;
+            gridCheckBoxColumn2.AllowDragging = true;
+            gridCheckBoxColumn2.AllowEditing = false;
+            gridCheckBoxColumn2.AllowResizing = true;
+            gridCheckBoxColumn2.HeaderText = "Disabled";
+            gridCheckBoxColumn2.MappingName = "Disabled";
+            gridCheckBoxColumn2.Width = 40D;
             gridCheckBoxColumn6.AllowDragging = true;
             gridCheckBoxColumn6.AllowResizing = true;
             gridCheckBoxColumn6.HeaderText = "Selected";
             gridCheckBoxColumn6.MappingName = "Selected";
             gridCheckBoxColumn6.Width = 40D;
-            gridTextColumn7.AllowDragging = true;
-            gridTextColumn7.AllowEditing = false;
-            gridTextColumn7.AllowResizing = true;
-            gridTextColumn7.HeaderText = "Cube";
-            gridTextColumn7.MappingName = "CubeDisplay";
-            gridTextColumn8.AllowDragging = true;
-            gridTextColumn8.AllowEditing = false;
-            gridTextColumn8.AllowResizing = true;
-            gridTextColumn8.HeaderText = "Measure Group (ID)";
-            gridTextColumn8.MappingName = "MeasureGroupLong";
+            gridTextColumn3.AllowDragging = true;
+            gridTextColumn3.AllowEditing = false;
+            gridTextColumn3.AllowResizing = true;
+            gridTextColumn3.HeaderText = "Cube";
+            gridTextColumn3.MappingName = "CubeDisplay";
+            gridTextColumn4.AllowDragging = true;
+            gridTextColumn4.AllowEditing = false;
+            gridTextColumn4.AllowResizing = true;
+            gridTextColumn4.HeaderText = "Measure Group (ID)";
+            gridTextColumn4.MappingName = "MeasureGroupLong";
             gridTextColumn9.AllowDragging = true;
             gridTextColumn9.AllowEditing = false;
             gridTextColumn9.AllowResizing = true;
@@ -353,13 +355,13 @@
             gridTextColumn10.AllowResizing = true;
             gridTextColumn10.HeaderText = "State";
             gridTextColumn10.MappingName = "State";
-            gridDateTimeColumn3.AllowDragging = true;
-            gridDateTimeColumn3.AllowEditing = false;
-            gridDateTimeColumn3.AllowResizing = true;
-            gridDateTimeColumn3.Format = "d";
-            gridDateTimeColumn3.HeaderText = "Last Processed";
-            gridDateTimeColumn3.MappingName = "LastProcessed";
-            gridDateTimeColumn3.MaxDateTime = new System.DateTime(9999, 12, 31, 23, 59, 59, 999);
+            gridDateTimeColumn2.AllowDragging = true;
+            gridDateTimeColumn2.AllowEditing = false;
+            gridDateTimeColumn2.AllowResizing = true;
+            gridDateTimeColumn2.Format = "d";
+            gridDateTimeColumn2.HeaderText = "Last Processed";
+            gridDateTimeColumn2.MappingName = "LastProcessed";
+            gridDateTimeColumn2.MaxDateTime = new System.DateTime(9999, 12, 31, 23, 59, 59, 999);
             gridCheckBoxColumn7.AllowDragging = true;
             gridCheckBoxColumn7.AllowEditing = false;
             gridCheckBoxColumn7.AllowResizing = true;
@@ -378,13 +380,13 @@
             gridButtonColumn2.MappingName = "Column9";
             gridButtonColumn2.MaximumWidth = 60D;
             gridButtonColumn2.ShowToolTip = true;
-            this.dgPartitions.Columns.Add(gridCheckBoxColumn5);
+            this.dgPartitions.Columns.Add(gridCheckBoxColumn2);
             this.dgPartitions.Columns.Add(gridCheckBoxColumn6);
-            this.dgPartitions.Columns.Add(gridTextColumn7);
-            this.dgPartitions.Columns.Add(gridTextColumn8);
+            this.dgPartitions.Columns.Add(gridTextColumn3);
+            this.dgPartitions.Columns.Add(gridTextColumn4);
             this.dgPartitions.Columns.Add(gridTextColumn9);
             this.dgPartitions.Columns.Add(gridTextColumn10);
-            this.dgPartitions.Columns.Add(gridDateTimeColumn3);
+            this.dgPartitions.Columns.Add(gridDateTimeColumn2);
             this.dgPartitions.Columns.Add(gridCheckBoxColumn7);
             this.dgPartitions.Columns.Add(gridButtonColumn2);
             this.dgPartitions.Location = new System.Drawing.Point(6, 32);
@@ -392,7 +394,7 @@
             this.dgPartitions.SelectionMode = Syncfusion.WinForms.DataGrid.Enums.GridSelectionMode.Extended;
             this.dgPartitions.ShowGroupDropArea = true;
             this.dgPartitions.ShowRowHeader = true;
-            this.dgPartitions.Size = new System.Drawing.Size(812, 326);
+            this.dgPartitions.Size = new System.Drawing.Size(827, 326);
             this.dgPartitions.TabIndex = 7;
             this.dgPartitions.Text = "sfDataGrid1";
             this.dgPartitions.QueryRowStyle += new Syncfusion.WinForms.DataGrid.Events.QueryRowStyleEventHandler(this.dgPartitions_QueryRowStyle);
@@ -405,7 +407,7 @@
             this.toolStripProgressBar});
             this.statusStrip.Location = new System.Drawing.Point(0, 434);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(1129, 22);
+            this.statusStrip.Size = new System.Drawing.Size(1144, 22);
             this.statusStrip.TabIndex = 7;
             this.statusStrip.Text = "statusStrip1";
             // 
@@ -469,19 +471,20 @@
             this.btnServerAdd.UseVisualStyleBackColor = true;
             this.btnServerAdd.Click += new System.EventHandler(this.btnServerAdd_Click);
             // 
-            // comboBox1
+            // cbPartitionProcessType
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(688, 364);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(130, 21);
-            this.comboBox1.TabIndex = 15;
+            this.cbPartitionProcessType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbPartitionProcessType.Location = new System.Drawing.Point(712, 364);
+            this.cbPartitionProcessType.MaxDropDownItems = 10;
+            this.cbPartitionProcessType.Name = "cbPartitionProcessType";
+            this.cbPartitionProcessType.Size = new System.Drawing.Size(121, 23);
+            this.cbPartitionProcessType.TabIndex = 15;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1129, 456);
+            this.ClientSize = new System.Drawing.Size(1144, 456);
             this.Controls.Add(this.btnServerAdd);
             this.Controls.Add(this.txtDataSource);
             this.Controls.Add(this.tvServer);
@@ -489,6 +492,7 @@
             this.Controls.Add(this.tabControl1);
             this.Name = "MainForm";
             this.Text = "SSAS Info";
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabServer.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.sfDataGrid1)).EndInit();
@@ -500,6 +504,7 @@
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tvServer)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cbPartitionProcessType)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -518,7 +523,7 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button btnSelectAllPartition;
         private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button btnPartitionRefresh;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button button7;
@@ -532,7 +537,7 @@
         private System.Windows.Forms.Button btnEnableSelectedPartitions;
         private System.Windows.Forms.TextBox txtPartitionFilter;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private Syncfusion.WinForms.ListView.SfComboBox cbPartitionProcessType;
     }
 }
 
