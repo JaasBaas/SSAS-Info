@@ -224,7 +224,9 @@ namespace SsasInfo.Client
         /// </summary>
         private void ProcessSelectedPartitionsNewThread()
         {
-            var starter = new ThreadStart(ProcessSelectedPartitions);
+            var threads = nudPartitionThreads.Value;
+            var starter = new ParameterizedThreadStart(ProcessSelectedPartitions);
+
             //starter += () =>
             //{
             //    SetStatusLabelReady();
@@ -232,20 +234,22 @@ namespace SsasInfo.Client
             //};
 
             _parThread = new Thread(starter);
-            _parThread.Start();
+            _parThread.Start(threads);
         }
 
         /// <summary>
         /// Process selected partitions
         /// </summary>
-        private void ProcessSelectedPartitions()
+        private void ProcessSelectedPartitions(Object obj)
         {
             try
             {
+                int mt = int.Parse(obj.ToString());
+
                 SetCursorSafe(Cursors.WaitCursor);
                 SetStatusLabel("Processing partitions...");
 
-                _utility.ProcessSelectedPartitions(_partitions, _selectedPartitionProcessType);
+                _utility.ProcessSelectedPartitions(_partitions, _selectedPartitionProcessType, mt);
             }
             finally
             {

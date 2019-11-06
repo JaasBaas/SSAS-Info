@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AnalysisServices;
 
@@ -122,13 +123,53 @@ namespace SsasInfo.Api
         }
         #endregion
 
-        public void ProcessSelectedPartitions(List<PartitionInfo> partitions, ProcessType processType)
+        public void ProcessSelectedPartitions(List<PartitionInfo> partitions, ProcessType processType, int maxThreads)
         {
+//            int maxThreads = 2;
+
+            // Create a scheduler that uses x threads. 
+            var lcts = new LimitedConcurrencyLevelTaskScheduler(maxThreads);
+            List<Task> tasks = new List<Task>();
+
+            // Create a TaskFactory and pass it our custom scheduler. 
+            var factory = new TaskFactory(lcts);
+            var cts = new CancellationTokenSource();
+
+            // Use our factory to run a set of tasks. 
+            //Object lockObj = new Object();
+            //int outputItem = 0;
+
             foreach (var d in partitions.Where(d => d.Selected == true))
             {
-                //ProcessPartition(d, processType);
-                d.Process(processType);
+                var cp = d;
+                var t = factory.StartNew(() => { cp.Process(processType); }, cts.Token);
+                tasks.Add(t);
             }
+
+            Task.WaitAll(tasks.ToArray());
+            cts.Dispose();
+
+            /*
+            var ts = new TaskScheduler();
+            ts.MaximumConcurrencyLevel = 3;
+
+            var options = new ParallelOptions
+            {
+                MaxDegreeOfParallelism = maxThreads
+            };
+
+            var p = partitions.Where(v => v.Selected == true).ToList();
+
+            Parallel.ForEach(p,options, currentPartition =>
+            {
+                currentPartition.Process(processType);
+            });
+*/
+            //foreach (var d in partitions.Where(d => d.Selected == true))
+            //{
+            //    //ProcessPartition(d, processType);
+            //    d.Process(processType);
+            //}
         }
 
         //public void ProcessPartition(PartitionInfo partition, ProcessType processType)
